@@ -1,0 +1,4 @@
+CustomerID,Name,Email,Phone,Classification
+1001,Ahmed Ali,ahmed@example.com,01000000001,Confidential
+1002,Sara Mohamed,sara@example.com,01000000002,Confidential
+1003,Omar Hassan,omar@example.com,01000000003,Confidential

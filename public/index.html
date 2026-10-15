@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1420" />
+  <meta name="description" content="DEPI AWS data protection dashboard: upload, classify, and monitor encrypted company files." />
+  <title>Sentinel | AWS Data Protection</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M20 16.6A4.6 4.6 0 0 0 17.8 8 6 6 0 0 0 6.2 9.4 4 4 0 0 0 7 17h13Z"/><path d="m12 18 0-7m-3 3 3-3 3 3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M13 2v7h7M8 13h8m-8 4h8"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h5l3-7 3 14 3-7h4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 6m2-11v5h-5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v4m0 4h.01"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+  </svg>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><svg class="icon"><use href="#i-shield"/></svg></span>
+        <span><strong>sentinel<span class="brand-dot">.</span></strong><small>DATA PROTECTION</small></span>
+      </div>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button type="button" class="nav-link active" data-view="overview"><svg class="icon"><use href="#i-grid"/></svg> Overview</button>
+        <button type="button" class="nav-link" data-view="upload"><svg class="icon"><use href="#i-cloud"/></svg> Upload & Scan</button>
+        <button type="button" class="nav-link" data-view="reports"><svg class="icon"><use href="#i-file"/></svg> Scan Reports</button>
+        <button type="button" class="nav-link" data-view="security"><svg class="icon"><use href="#i-lock"/></svg> Security Controls</button>
+        <button type="button" class="nav-link" data-view="activity"><svg class="icon"><use href="#i-pulse"/></svg> Monitoring</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="environment-panel">
+          <div class="environment-title"><span class="dot dot-teal"></span> PROJECT ENVIRONMENT</div>
+          <div class="environment-name">AWS • us-east-1</div>
+          <div class="environment-caption" id="env-bucket">Loading environment...</div>
+        </div>
+        <div class="sidebar-footer">DEPI Industry Project <span>2026</span></div>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="breadcrumbs"><button type="button" id="mobile-nav-button" class="icon-button mobile-only" aria-label="Toggle menu"><svg class="icon"><use href="#i-menu"/></svg></button><span>WORKSPACE</span><svg class="icon crumb-arrow"><use href="#i-chevron"/></svg><strong id="crumb-title">Overview</strong></div>
+        <div class="topbar-right"><span class="mode-tag" id="mode-tag">Connecting...</span><span class="topbar-divider"></span><span class="topbar-avatar">DP</span></div>
+      </header>
+
+      <main class="content">
+        <section class="view active" id="view-overview">
+          <div class="page-heading"><div><div class="eyebrow">SECURITY COMMAND CENTER</div><h1>Protection at a glance<span class="heading-period">.</span></h1><p class="subtitle">Your encrypted file pipeline, classification results, and monitoring in one place.</p></div><button class="btn btn-outline" id="refresh-button"><svg class="icon"><use href="#i-refresh"/></svg> Refresh</button></div>
+
+          <div class="hero-panel"><div class="hero-copy"><span class="hero-kicker"><span class="pulse-dot"></span> AUTOMATED PROTECTION PIPELINE</span><h2>Every file. Checked.<br/><span>Every risk. Visible.</span></h2><p>Upload a CSV and our AWS Lambda pipeline classifies it, generates a report, and sends alerts when sensitive data is detected.</p><button type="button" class="btn btn-primary" data-go="upload">Scan a file <svg class="icon"><use href="#i-arrow"/></svg></button></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-outer"></div><div class="orbit orbit-inner"></div><div class="art-shield"><svg class="icon"><use href="#i-shield"/></svg></div><span class="floating-icon float-1"><svg class="icon"><use href="#i-lock"/></svg></span><span class="floating-icon float-2"><svg class="icon"><use href="#i-pulse"/></svg></span><span class="floating-icon float-3"><svg class="icon"><use href="#i-file"/></svg></span></div></div>
+
+          <div class="metrics-row" aria-live="polite">
+            <div class="metric-card"><div class="metric-top"><span>Total scanned</span><span class="metric-icon blue"><svg class="icon"><use href="#i-file"/></svg></span></div><div class="metric-number" id="metric-total">—</div><div class="metric-foot">Recent scan reports</div></div>
+            <div class="metric-card"><div class="metric-top"><span>Confidential files</span><span class="metric-icon amber"><svg class="icon"><use href="#i-lock"/></svg></span></div><div class="metric-number" id="metric-confidential">—</div><div class="metric-foot"><span class="tiny-dot amber-dot"></span> Contains sensitive patterns</div></div>
+            <div class="metric-card"><div class="metric-top"><span>Internal files</span><span class="metric-icon green"><svg class="icon"><use href="#i-check"/></svg></span></div><div class="metric-number" id="metric-internal">—</div><div class="metric-foot"><span class="tiny-dot green-dot"></span> No matched patterns</div></div>
+            <div class="metric-card"><div class="metric-top"><span>Patterns detected</span><span class="metric-icon purple"><svg class="icon"><use href="#i-search"/></svg></span></div><div class="metric-number" id="metric-patterns">—</div><div class="metric-foot">Across recent scans</div></div>
+          </div>
+
+          <div class="dashboard-columns"><section class="surface-card scans-card"><div class="section-heading"><div><h3>Recent scans</h3><p>Latest classification reports</p></div><button class="text-link" type="button" data-go="reports">View all <svg class="icon"><use href="#i-arrow"/></svg></button></div><div class="table-scroll"><table class="data-table"><thead><tr><th>FILE NAME</th><th>CLASSIFICATION</th><th>DETECTIONS</th><th>SCANNED</th><th></th></tr></thead><tbody id="recent-table"><tr><td colspan="5" class="empty-table">Loading scans...</td></tr></tbody></table></div></section><section class="surface-card insight-card"><div class="section-heading"><div><h3>Detection overview</h3><p>Most recent scan results</p></div><span class="icon-soft"><svg class="icon"><use href="#i-pulse"/></svg></span></div><div id="chart-empty" class="chart-empty">Waiting for scan data...</div><div class="bar-chart" id="mini-chart" role="img" aria-label="Detected sensitive patterns in the latest scans"></div><div class="chart-legend"><span><i class="legend-swatch"></i> Sensitive patterns per scan</span></div></section></div>
+
+          <div class="workflow-banner"><span class="workflow-title">YOUR PROTECTION PIPELINE</span><div class="workflow-steps"><span><i>01</i> S3 Upload</span><svg class="icon"><use href="#i-arrow"/></svg><span><i>02</i> Lambda Scan</span><svg class="icon"><use href="#i-arrow"/></svg><span><i>03</i> Classification</span><svg class="icon"><use href="#i-arrow"/></svg><span><i>04</i> SNS Alert</span></div></div>
+        </section>
+
+        <section class="view" id="view-upload"><div class="page-heading"><div><div class="eyebrow">AUTOMATED DATA CLASSIFICATION</div><h1>Upload & Scan<span class="heading-period">.</span></h1><p class="subtitle">Drop a CSV file to start your automated AWS security analysis.</p></div></div>
+          <div class="upload-layout"><section class="surface-card upload-main"><div class="section-heading"><div><h3>New file scan</h3><p>Only synthetic test records. Maximum file size: 1 MB.</p></div><span class="file-type-chip">.CSV</span></div><div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose a CSV file"><div class="dropzone-icon"><svg class="icon"><use href="#i-cloud"/></svg></div><strong>Drop your CSV file here</strong><p>or <span>browse your computer</span> to choose a file</p><small>Encrypted in S3 · Automatically scanned by Lambda</small><input type="file" id="file-input" accept=".csv,text/csv" hidden /></div><div id="selected-file" class="selected-file hidden"><svg class="icon"><use href="#i-file"/></svg><span id="selected-name">—</span><span id="selected-size">—</span><button id="remove-file" type="button" aria-label="Remove selected file"><svg class="icon"><use href="#i-x"/></svg></button></div><button class="btn btn-primary upload-btn" id="upload-button" disabled>Upload & start scan <svg class="icon"><use href="#i-arrow"/></svg></button><div class="upload-feedback hidden" id="upload-feedback" role="status"></div></section><aside class="upload-sidebar"><div class="surface-card instructions-card"><span class="instructions-icon"><svg class="icon"><use href="#i-shield"/></svg></span><h3>What happens next?</h3><div class="instruction"><span>1</span><div><strong>Secure upload</strong><p>File is written to your encrypted S3 incoming/ prefix.</p></div></div><div class="instruction"><span>2</span><div><strong>Automatic scan</strong><p>An S3 event invokes Lambda to detect sensitive patterns.</p></div></div><div class="instruction"><span>3</span><div><strong>Report & notify</strong><p>Results are saved to reports/; alerts go to SNS.</p></div></div></div><div class="tip-card"><svg class="icon"><use href="#i-alert"/></svg><span>This is a regex-based demonstration. It isn't a full sensitive-data discovery solution.</span></div></aside></div>
+        </section>
+
+        <section class="view" id="view-reports"><div class="page-heading"><div><div class="eyebrow">DATA CLASSIFICATION RESULTS</div><h1>Scan Reports<span class="heading-period">.</span></h1><p class="subtitle">Review previous classifications and inspect sanitized findings.</p></div><button class="btn btn-outline" data-refresh="true"><svg class="icon"><use href="#i-refresh"/></svg> Refresh</button></div><section class="surface-card reports-full"><div class="report-toolbar"><div class="search-field"><svg class="icon"><use href="#i-search"/></svg><input id="report-search" type="search" placeholder="Search files..." aria-label="Search reports" /></div><div class="filter-tabs" role="group" aria-label="Filter by classification"><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="confidential">Confidential</button><button class="filter-btn" data-filter="internal">Internal</button></div></div><div class="table-scroll"><table class="data-table"><thead><tr><th>FILE NAME</th><th>CLASSIFICATION</th><th>FINDINGS</th><th>DATE</th><th>REPORT</th></tr></thead><tbody id="reports-table"><tr><td colspan="5" class="empty-table">Loading reports...</td></tr></tbody></table></div><div class="table-bottom"><span id="report-count">—</span><span>Sanitized data only</span></div></section></section>
+
+        <section class="view" id="view-security"><div class="page-heading"><div><div class="eyebrow">SECURITY POSTURE</div><h1>Security Controls<span class="heading-period">.</span></h1><p class="subtitle">Read-only checks for your actual S3 bucket security configuration.</p></div><button class="btn btn-outline" data-refresh="true"><svg class="icon"><use href="#i-refresh"/></svg> Refresh</button></div><div class="security-header"><div class="security-header-icon"><svg class="icon"><use href="#i-shield"/></svg></div><div><strong>Bucket protection status</strong><p id="security-region">S3 • us-east-1</p></div><span class="security-overall" id="security-overall">Checking...</span></div><div class="security-grid" id="security-grid"><div class="surface-card security-placeholder">Loading AWS security controls...</div></div><div class="info-notice"><svg class="icon"><use href="#i-alert"/></svg><span>These checks verify selected settings only. They do not prove regulatory compliance or replace a full security audit.</span></div></section>
+
+        <section class="view" id="view-activity"><div class="page-heading"><div><div class="eyebrow">OBSERVABILITY & RELIABILITY</div><h1>Monitoring<span class="heading-period">.</span></h1><p class="subtitle">Execution metrics and the health of your automated scanning pipeline.</p></div><button class="btn btn-outline" data-refresh="true"><svg class="icon"><use href="#i-refresh"/></svg> Refresh</button></div><div class="monitoring-metrics"><div class="surface-card monitoring-metric"><span>Lambda invocations · 24h</span><strong id="monitor-invocations">—</strong><small>Executions reported by CloudWatch</small></div><div class="surface-card monitoring-metric"><span>Lambda errors · 24h</span><strong id="monitor-errors">—</strong><small>Execution failures</small></div><div class="surface-card monitoring-metric"><span>Error alarm</span><strong class="alarm-state" id="monitor-alarm">—</strong><small id="monitor-alarm-caption">DEPI-Lambda-Error-Alarm</small></div></div><section class="surface-card activity-card"><div class="section-heading"><div><h3>Recent classification activity</h3><p>Derived from scan reports, newest first</p></div><span class="icon-soft"><svg class="icon"><use href="#i-clock"/></svg></span></div><div id="activity-list" class="activity-list"><p class="empty-message">Loading activity...</p></div></section></section>
+      </main>
+      <footer class="app-footer"><span>Sentinel • DEPI AWS Data Protection</span><span>Made for secure, synthetic-data demonstrations</span></footer>
+    </div>
+  </div>
+  <dialog class="report-modal" id="report-modal" aria-labelledby="report-modal-title"><div class="modal-top"><div><div class="eyebrow">CLASSIFICATION REPORT</div><h2 id="report-modal-title">Scan details</h2></div><button type="button" id="modal-close" class="icon-button" aria-label="Close report"><svg class="icon"><use href="#i-x"/></svg></button></div><div id="modal-body" class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-outline" id="modal-download"><svg class="icon"><use href="#i-download"/></svg> Download JSON</button><button type="button" class="btn btn-primary" id="modal-done">Done</button></div></dialog>
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
